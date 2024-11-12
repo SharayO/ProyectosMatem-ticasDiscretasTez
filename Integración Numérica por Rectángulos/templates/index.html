@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculadora de Integración Numérica</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        .result-box {
+            margin-top: 20px;
+            background-color: #e0f7fa;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+        .result-header {
+            background-color: #006064;
+            color: white;
+            padding: 10px;
+            border-radius: 5px;
+            font-size: 1.2rem;
+        }
+        .result-value {
+            font-size: 1.5rem;
+            color: #004d40;
+            margin: 10px 0;
+        }
+        .btn-custom {
+            margin-right: 10px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1 class="text-center mt-5">Calculadora de Integración Numérica</h1>
+
+    <form action="/calculate" method="POST" class="mt-4">
+        <div class="form-group">
+            <label for="fx">Función (f(x)):</label>
+            <input type="text" class="form-control" id="fx" name="fx" placeholder="Ejemplo: x**2 + 3" value="{{ fx }}" required>
+        </div>
+        <div class="form-group">
+            <label for="a">Límite Inferior (a):</label>
+            <input type="number" class="form-control" id="a" name="a" step="any" value="{{ a }}" required>
+        </div>
+        <div class="form-group">
+            <label for="b">Límite Superior (b):</label>
+            <input type="number" class="form-control" id="b" name="b" step="any" value="{{ b }}" required>
+        </div>
+        <div class="form-group">
+            <label for="n">Número de Subintervalos (n):</label>
+            <input type="number" class="form-control" id="n" name="n" min="1" value="{{ n }}" required>
+        </div>
+        <button type="submit" class="btn btn-primary btn-custom">Calcular</button>
+        <button type="reset" class="btn btn-secondary btn-custom">Borrar</button>
+        <a href="/" class="btn btn-danger">Salir</a>
+    </form>
+
+    {% if result %}
+    <div class="result-box">
+        <div class="result-header">
+            Resultados de la Integral
+        </div>
+        <div class="result-value">
+            Método del Punto Extremo Izquierdo: {{ result['left'] }}
+        </div>
+        <div class="result-value">
+            Método del Punto Extremo Derecho: {{ result['right'] }}
+        </div>
+        <div class="result-value">
+            Método del Punto Medio: {{ result['middle'] }}
+        </div>
+    </div>
+    {% endif %}
+    
+    {% if error %}
+    <div class="alert alert-danger mt-4">
+        {{ error }}
+    </div>
+    {% endif %}
+</div>
+
+</body>
+</html>

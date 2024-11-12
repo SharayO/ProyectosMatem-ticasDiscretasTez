@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Integración Numérica Por Método de Montecarlo</title>
+    <link rel="stylesheet" href="/static/styles.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f8f9fa;
+            margin: 0;
+            padding: 20px;
+        }
+        h2 {
+            text-align: center;
+            color: #007bff;
+            margin-bottom: 20px;
+        }
+        fieldset {
+            border: 2px solid #007bff;
+            border-radius: 5px;
+            margin: 20px auto;
+            padding: 20px;
+            max-width: 600px;
+            background-color: #e9ecef;
+        }
+        legend {
+            font-weight: bold;
+            color: #007bff;
+            font-size: 1.2em;
+        }
+        label {
+            display: block;
+            margin: 10px 0 5px;
+        }
+        input[type="text"] {
+            width: calc(100% - 22px);
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #007bff;
+            border-radius: 5px;
+            box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+        }
+        button {
+            padding: 10px 20px;
+            margin: 5px 0;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            color: white;
+            background-color: #007bff;
+            transition: background-color 0.3s;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        .output, .error {
+            border-radius: 5px;
+            padding: 15px;
+            margin-top: 20px;
+            background-color: #d1ecf1;
+            border: 1px solid #bee5eb;
+        }
+        .error {
+            background-color: #f8d7da;
+            border-color: #f5c6cb;
+        }
+        .output p, .error p {
+            margin: 5px 0;
+        }
+        @media (max-width: 600px) {
+            body {
+                padding: 10px;
+            }
+            button {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <h2>Integración Numérica Por Método de Montecarlo</h2>
+    <form action="/calcular" method="post">
+        <fieldset>
+            <legend>Ingreso</legend>
+            <label for="fx">Función f(x):</label>
+            <input type="text" id="fx" name="fx" value="{{ fx|default('') }}" required>
+            <label for="a">Extremo izquierdo (a):</label>
+            <input type="text" id="a" name="a" value="{{ a|default('') }}" required>
+            <label for="b">Extremo derecho (b):</label>
+            <input type="text" id="b" name="b" value="{{ b|default('') }}" required>
+            <label for="N">Número de puntos (N):</label>
+            <input type="text" id="N" name="N" value="{{ N|default('') }}" required>
+        </fieldset>
+        <div style="text-align: center;">
+            <button type="submit">Calcular</button>
+            <button type="reset">Borrar</button>
+            <button type="button" onclick="window.close()">Salir</button>
+        </div>
+    </form>
+
+    {% if resultado %}
+    <div class="output">
+        <h3>Salida</h3>
+        <p>Integral: ∫<sub>{{ a }}</sub><sup>{{ b }}</sup> f(x) dx</p>
+        <p>Número de puntos contados: {{ puntos_contados }}</p>
+        <p>Valor de la integral: {{ resultado }}</p>
+    </div>
+    {% endif %}
+
+    {% if error %}
+    <div class="error">
+        <h3>Error</h3>
+        <p>{{ error }}</p>
+    </div>
+    {% endif %}
+</body>
+</html>

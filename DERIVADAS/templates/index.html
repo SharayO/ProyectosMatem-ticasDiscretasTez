@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculadora de Derivadas</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .container {
+            background-color: white;
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+            max-width: 600px;
+            width: 100%;
+            text-align: center;
+        }
+
+        h1 {
+            font-size: 2.5em;
+            margin-bottom: 20px;
+            color: #333;
+        }
+
+        p {
+            font-size: 1.1em;
+            color: #666;
+        }
+
+        form {
+            margin-bottom: 30px;
+        }
+
+        input[type="text"] {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 1em;
+            margin-top: 10px;
+            margin-bottom: 20px;
+            transition: border-color 0.3s;
+        }
+
+        input[type="text"]:focus {
+            border-color: #007BFF;
+            outline: none;
+        }
+
+        button {
+            background-color: #007BFF;
+            color: white;
+            padding: 15px 30px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1em;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        .result-container {
+            margin-top: 30px;
+            text-align: left;
+        }
+
+        h2 {
+            color: #333;
+            font-size: 1.8em;
+            margin-bottom: 10px;
+        }
+
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        ul li {
+            background-color: #f8f9fa;
+            margin: 10px 0;
+            padding: 15px;
+            border-left: 5px solid #007BFF;
+            border-radius: 4px;
+            font-size: 1.1em;
+        }
+
+        .error {
+            color: #d9534f;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Calculadora de Derivadas</h1>
+        <p>Ingrese una función en términos de <strong>x</strong> y calcule hasta la sexta derivada.</p>
+        <form method="POST">
+            <input type="text" id="funcion" name="funcion" placeholder="Escribe tu función aquí..." value="{{ request.form.get('funcion', '') }}" required>
+            <button type="submit">Calcular Derivadas</button>
+        </form>
+
+        <div class="result-container">
+            {% if resultado %}
+                <h2>Resultado:</h2>
+                <p class="{{ 'error' if 'Error' in resultado else '' }}">{{ resultado }}</p>
+            {% endif %}
+
+            {% if derivadas %}
+                <h2>Derivadas:</h2>
+                <ul>
+                    {% for i, derivada in enumerate(derivadas, start=1) %}
+                        <li>{{ i }}ª derivada: {{ derivada }}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+        </div>
+    </div>
+</body>
+</html>

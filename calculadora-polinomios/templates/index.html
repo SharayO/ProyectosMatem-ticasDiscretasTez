@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Calculadora de Polinomios</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+</head>
+
+<body>
+  <main class="container">
+    <div class="form-container">
+      <h1>Calculadora Gráfica de Polinomios</h1>
+      <form method="POST" action="/calcular">
+        <div class="form-group">
+          <label for="polynomial">Ingrese un polinomio:</label>
+          <input type="text" id="polinomio" name="polinomio" placeholder="Ej: x**2 + 3*x + 2">
+        </div>
+
+        <!-- Botones para las operaciones -->
+        <div class="button-group">
+          <button type="button" onclick="insertOperator('**')" class="op-button">^</button>
+          <button type="button" onclick="insertOperator('**(1/2)')" class="op-button">√</button>
+          <button type="button" class="btn-borrar" onclick="limpiar()">Borrar</button>
+          <button type="submit" class="graph-button">Graficar</button>
+        </div>
+      </form>
+    </div>
+
+    {% if graph_url %}
+    <h2>Gráfico del Polinomio:</h2>
+    <img src="{{ graph_url }}" alt="Gráfico del polinomio" width="650">
+    {% endif %}
+
+    <!-- Mostrar las raíces reales si están disponibles
+    {% if real_roots %}
+    <h3>Raíces Reales:</h3>
+    <ul>
+      {% for root in real_roots %}
+      <li>{{ root }}</li>
+      {% endfor %}
+    </ul>
+    {% endif %}
+
+    <!-- Mostrar las raíces complejas si están disponibles -->
+    <!-- {% if complex_roots %}
+    <h3>Raíces Complejas:</h3>
+    <ul>
+      {% for root in complex_roots %}
+      <li>{{ root }}</li>
+      {% endfor %}
+    </ul>
+    {% endif %} -->
+    {% if roots %}
+        <div class="raices">
+          <h1>Raices Reales:</h1>
+          {% for root in roots %}
+                <span>{{ root }}</span>
+          {% endfor %}
+        </div>
+    {% endif %}
+  </main>
+
+  <script>
+    function insertOperator(operator) {
+      var input = document.getElementById('polinomio');
+      input.value += operator;
+    }
+
+    function limpiar() {
+      document.getElementById('polinomio').value = '';
+    }
+  </script>
+</body>
+
+</html>

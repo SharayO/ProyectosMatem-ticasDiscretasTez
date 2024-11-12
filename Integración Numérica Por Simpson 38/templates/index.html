@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Integración Numérica por Simpson 3/8</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f8f9fa;
+            color: #333;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+        .container {
+            width: 100%;
+            max-width: 700px;
+            background-color: white;
+            padding: 40px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+        }
+        .title {
+            background-color: #17a2b8;
+            color: white;
+            text-align: center;
+            padding: 20px;
+            border-radius: 10px 10px 0 0;
+        }
+        h2 {
+            margin: 0;
+            font-size: 24px;
+        }
+        fieldset {
+            border: 1px solid #ddd;
+            padding: 20px;
+            border-radius: 8px;
+            margin-top: 20px;
+        }
+        legend {
+            font-weight: bold;
+            color: #17a2b8;
+        }
+        label {
+            font-weight: bold;
+            margin-bottom: 5px;
+            display: block;
+        }
+        input[type="text"], input[type="number"] {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            margin-bottom: 15px;
+            font-size: 16px;
+        }
+        .buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+        }
+        button {
+            padding: 12px 20px;
+            font-size: 16px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button[type="submit"] {
+            background-color: #28a745;
+            color: white;
+        }
+        button[type="reset"] {
+            background-color: #dc3545;
+            color: white;
+        }
+        button[type="button"] {
+            background-color: #6c757d;
+            color: white;
+        }
+        button:hover {
+            opacity: 0.9;
+        }
+        .result, .error {
+            margin-top: 20px;
+            padding: 20px;
+            border-radius: 8px;
+        }
+        .result {
+            background-color: #e9ecef;
+            border-left: 4px solid #17a2b8;
+        }
+        .error {
+            background-color: #f8d7da;
+            border-left: 4px solid #dc3545;
+            color: #dc3545;
+        }
+        .result p, .error p {
+            margin: 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="title">
+            <h2>Integración Numérica Por Simpson 3/8</h2>
+        </div>
+
+        <fieldset>
+            <legend>Ingreso</legend>
+            <form method="POST" action="/calcular">
+                <label for="fx">Función f(x):</label>
+                <input type="text" name="fx" id="fx" placeholder="Ej. sin(x) + x**2" value="{{ fx }}" required>
+
+                <label>Intervalo:</label>
+                <label for="a">Extremo izquierdo (a):</label>
+                <input type="number" step="any" name="a" id="a" value="{{ a }}" required>
+
+                <label for="b">Extremo derecho (b):</label>
+                <input type="number" step="any" name="b" id="b" value="{{ b }}" required>
+
+                <label for="n">Número de particiones (n):</label>
+                <input type="number" name="n" id="n" value="{{ n }}" required>
+
+                <div class="buttons">
+                    <button type="submit">Calcular</button>
+                    <button type="reset">Borrar</button>
+                    <button type="button" onclick="window.location.href='/'">Salir</button>
+                </div>
+            </form>
+        </fieldset>
+
+        {% if resultado %}
+        <fieldset>
+            <legend>Salida</legend>
+            <div class="result">
+                <p>Integral: ∫<sub>{{a}}</sub><sup>{{b}}</sup> f(x) dx</p>
+                <p>Valor de la integral: {{ resultado }}</p>
+            </div>
+        </fieldset>
+        {% endif %}
+
+        {% if error %}
+        <div class="error">
+            <p>Error: {{ error }}</p>
+        </div>
+        {% endif %}
+    </div>
+</body>
+</html>

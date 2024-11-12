@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Método de Newton-Raphson</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 20px;
+        }
+        .container {
+            width: 600px;
+            margin: 0 auto;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            text-align: center;
+            background-color: #007bff;
+            color: white;
+            padding: 10px;
+            border-radius: 5px;
+        }
+        label {
+            display: block;
+            margin: 10px 0 5px;
+        }
+        input[type="text"], input[type="number"] {
+            width: 100%;
+            padding: 10px;
+            margin: 5px 0 15px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        .buttons {
+            text-align: center;
+        }
+        button {
+            padding: 10px 20px;
+            margin: 5px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        .result, .error {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 5px;
+            background-color: #e0f7fa;
+            text-align: center;
+        }
+        .error {
+            background-color: #f8d7da;
+            color: #721c24;
+        }
+        .result h2, .error h2 {
+            margin: 0;
+            font-size: 18px;
+        }
+        table {
+            margin-top: 20px;
+            width: 100%;
+            border-collapse: collapse;
+        }
+        table, th, td {
+            border: 1px solid black;
+        }
+        th, td {
+            padding: 10px;
+            text-align: center;
+        }
+        th {
+            background-color: #007bff;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>MÉTODO DE NEWTON-RAPHSON</h1>
+    <form method="POST">
+        <label for="funcion">Función: f(x)</label>
+        <input type="text" id="funcion" name="funcion" placeholder="Ejemplo: sin(x) + log(x) + exp(x)" required value="{{ funcion or '' }}">
+
+        <label for="punto_inicial">Punto inicial: x₀</label>
+        <input type="number" id="punto_inicial" name="punto_inicial" step="any" placeholder="Punto de inicio" required value="{{ punto_inicial or '' }}">
+
+        <label for="tolerancia">Error de tolerancia: εₜ</label>
+        <input type="number" id="tolerancia" name="tolerancia" step="any" placeholder="Tolerancia" required value="{{ tolerancia or '' }}">
+
+        <div class="buttons">
+            <button type="submit">CALCULAR</button>
+            <button type="reset">BORRAR</button>
+            <button type="button" onclick="window.close()">SALIR</button>
+        </div>
+    </form>
+
+    {% if resultado %}
+    <div class="result">
+        <h2>Raíz aproximada: {{ resultado.raiz }}</h2>
+        <p>Error: {{ resultado.error }}</p>
+    </div>
+    {% endif %}
+
+    {% if iteraciones %}
+    <div class="result">
+        <h2>Tabla de Iteraciones:</h2>
+        <table>
+            <tr>
+                <th>Iteración</th>
+                <th>x₀</th>
+                <th>Raíz aproximada</th>
+                <th>Error</th>
+            </tr>
+            {% for iteracion in iteraciones %}
+            <tr>
+                <td>{{ loop.index }}</td>
+                <td>{{ iteracion.x0 }}</td>
+                <td>{{ iteracion.raiz }}</td>
+                <td>{{ iteracion.error }}</td>
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
+    {% endif %}
+
+    {% if error %}
+    <div class="error">
+        <h2>Error:</h2>
+        <p>{{ error }}</p>
+    </div>
+    {% endif %}
+</div>
+
+</body>
+</html>

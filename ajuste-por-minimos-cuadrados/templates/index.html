@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ajuste por Mínimos Cuadrados</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f4f4f9;
+            color: #333;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            width: 50%;
+            margin: 50px auto;
+            background-color: #fff;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+            padding: 20px;
+        }
+        h1 {
+            text-align: center;
+            color: #007BFF;
+        }
+        form {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        label {
+            margin-top: 10px;
+            font-size: 1.1em;
+        }
+        input[type="text"] {
+            width: 80%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 1em;
+        }
+        button {
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            margin: 10px;
+            font-size: 1em;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        button[type="reset"] {
+            background-color: #6c757d;
+        }
+        button[type="reset"]:hover {
+            background-color: #5a6268;
+        }
+        .results {
+            margin-top: 30px;
+        }
+        .results h2 {
+            text-align: center;
+            color: #28a745;
+        }
+        .grado {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px;
+            background-color: #f9f9f9;
+            border: 1px solid #e0e0e0;
+            border-radius: 5px;
+            margin-bottom: 10px;
+        }
+        .grado label {
+            font-weight: bold;
+            margin-right: 10px;
+        }
+        .grado input[type="text"] {
+            width: 70%;
+            padding: 8px;
+            border: none;
+            background-color: #f4f4f9;
+            font-size: 1em;
+            color: #333;
+        }
+        .grado input[type="text"]:focus {
+            outline: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Ajuste por Mínimos Cuadrados</h1>
+        <form method="post">
+            <label for="x">Valores de X (separados por coma):</label>
+            <input type="text" id="x" name="x" value="{{ request.form.get('x', '') }}" required>
+
+            <label for="y">Valores de Y (separados por coma):</label>
+            <input type="text" id="y" name="y" value="{{ request.form.get('y', '') }}" required>
+
+            <div>
+                <button type="submit">CALCULAR</button>
+                <button type="reset">BORRAR</button>
+            </div>
+        </form>
+
+        {% if ajustes %}
+        <div class="results">
+            <h2>Resultados de Ajuste por Grado</h2>
+            {% for grado, valores in ajustes.items() %}
+            <div class="grado">
+                <label>Grado {{ loop.index }}:</label>
+                <input type="text" value="{{ valores.coeficientes | join(', ') }}" readonly>
+                <label>R²: {{ valores.r2 | round(4) }}</label>
+            </div>
+            {% endfor %}
+        </div>
+        {% endif %}
+    </div>
+</body>
+</html>
