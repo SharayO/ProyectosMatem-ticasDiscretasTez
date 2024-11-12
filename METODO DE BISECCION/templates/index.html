@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculadora Método de Bisección</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .calculator {
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 90%;
+            max-width: 800px; /* Aumenta el ancho máximo */
+            text-align: center;
+        }
+        h1 {
+            text-align: center;
+        }
+        label {
+            display: block;
+            text-align: left;
+            margin-top: 10px;
+        }
+        input[type="text"], input[type="number"] {
+            width: calc(100% - 22px);
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        .buttons {
+            display: flex;
+            justify-content: space-between;
+        }
+        button {
+            padding: 10px;
+            width: 32%;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        .result {
+            margin-top: 20px;
+            background-color: #e0f7fa;
+            padding: 10px;
+            border-radius: 5px;
+        }
+        .table-container {
+            max-height: 400px; /* Aumenta la altura máxima */
+            overflow-y: auto;
+            margin-top: 20px;
+        }
+        table {
+            margin-top: 20px;
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.9em; /* Reduce el tamaño de la fuente */
+        }
+        table, th, td {
+            border: 1px solid #ddd; /* Cambia a un borde más suave */
+        }
+        th, td {
+            padding: 12px; /* Aumenta el espaciado de las celdas */
+            text-align: center;
+        }
+        th {
+            background-color: #007bff;
+            color: white;
+        }
+        /* Alternar colores de filas */
+        tbody tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+        tbody tr:hover {
+            background-color: #ddd;
+        }
+    </style>
+</head>
+<body>
+    <div class="calculator">
+        <h1>Método de Bisección</h1>
+        <form method="POST">
+            <label for="funcion">Función f(x):</label>
+            <input type="text" id="funcion" name="funcion" placeholder="Ej: x**3 - x - 2" 
+                   value="{{ request.form['funcion'] if request.form['funcion'] else '' }}" required>
+
+            <label for="a">Límite inferior (a):</label>
+            <input type="number" step="any" id="a" name="a" 
+                   value="{{ request.form['a'] if request.form['a'] else '' }}" required>
+
+            <label for="b">Límite superior (b):</label>
+            <input type="number" step="any" id="b" name="b" 
+                   value="{{ request.form['b'] if request.form['b'] else '' }}" required>
+
+            <label for="tol">Error de tolerancia (Ɛ<sub>t</sub>):</label>
+            <input type="number" step="any" id="tol" name="tol" 
+                   value="{{ request.form['tol'] if request.form['tol'] else '' }}" required>
+
+            <div class="buttons">
+                <button type="submit">CALCULAR</button>
+                <button type="reset">BORRAR</button>
+                <button type="button" onclick="window.close()">SALIR</button>
+            </div>
+        </form>
+
+        {% if resultado %}
+            <div class="result">
+                <h2>Resultado:</h2>
+                <p>{{ resultado }}</p>
+            </div>
+        {% endif %}
+
+        {% if iteraciones %}
+            <div class="result">
+                <h2>Tabla de Iteraciones:</h2>
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Iteración</th>
+                                <th>Límite Inferior (a)</th>
+                                <th>Límite Superior (b)</th>
+                                <th>f(a)</th>
+                                <th>f(b)</th>
+                                <th>Punto Medio (rn)</th>
+                                <th>f(rn)</th>
+                                <th>Error Relativo</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for iteracion in iteraciones %}
+                                <tr>
+                                    <td>{{ iteracion['iteracion'] }}</td>
+                                    <td>{{ iteracion['a'] }}</td>
+                                    <td>{{ iteracion['b'] }}</td>
+                                    <td>{{ iteracion['fa'] }}</td> <!-- Valor de f(a) -->
+                                    <td>{{ iteracion['fb'] }}</td> <!-- Valor de f(b) -->
+                                    <td>{{ iteracion['midpoint'] }}</td>
+                                    <td>{{ iteracion['fm'] }}</td> <!-- Valor de f(rn) -->
+                                    <td>{{ iteracion['error_relativo'] }}</td> <!-- Error relativo, si lo tienes -->
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        {% endif %}
+    </div>
+</body>
+</html>
